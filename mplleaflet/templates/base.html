@@ -1,0 +1,34 @@
+<head>
+  <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.7.1/leaflet.css" />
+  <script src="http://cdn.leafletjs.com/leaflet-0.7.1/leaflet.js"></script>
+  <style>
+    {% block style %}
+    #map{{ mapid }} {
+      height:100%;
+    }
+    {% endblock %}
+  </style> 
+</head>
+<body>
+  <div id="map{{ mapid }}"></div>
+<script text="text/javascript">
+{% block script_main %}
+var map = L.map('map{{ mapid }}');
+L.tileLayer(
+  "{{ tile_url }}",
+  {maxZoom:19, attribution: '{{ attribution }}'}).addTo(map);
+var gjData = {{ geojson }};
+var gj = L.geoJson(gjData, {
+  style: function (feature) {
+    return feature.properties;
+  },
+  pointToLayer: function (feature, latlng) {
+    return L.circleMarker(latlng, feature.properties);
+  }
+});
+gj.addTo(map);
+
+map.fitBounds(gj.getBounds());
+{% endblock %}
+</script>
+</body>

@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+{% block style %}
+    #map{{ mapid }} {
+      height:{{ height }}px;
+    }
+{% endblock %}
+{% block script_main %}
+func{{ mapid }} = function() {
+{{ super() }}
+}
+setTimeout(function() { func{{ mapid }}() }, 2000);
+{% endblock %}
