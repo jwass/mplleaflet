@@ -23,7 +23,10 @@ var gj = L.geoJson(gjData, {
     return feature.properties;
   },
   pointToLayer: function (feature, latlng) {
-    return L.circleMarker(latlng, feature.properties);
+    var icon = L.divIcon({'html': feature.properties.html, 
+        iconAnchor: [200, 200], 
+        className: 'empty'});  // What can I do about empty?
+    return L.marker(latlng, {icon: icon});
   }
 });
 gj.addTo(map);

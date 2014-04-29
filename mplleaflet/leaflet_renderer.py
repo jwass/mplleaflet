@@ -1,8 +1,12 @@
 from functools import partial
 
+from jinja2 import Template
+
 from utils import iter_rings
 
 from mplexporter.renderers.base import Renderer
+
+svg_template = Template("""<svg width="400px" height="400px" viewBox="-200 -200 400 400" xmlns="http://www.w3.org/2000/svg" version="1.1">  <path d="{{ path }}" fill="red" stroke="blue" stroke-width="3" /> </svg>""")
 
 class LeafletRenderer(Renderer):
     def __init__(self, crs=None, epsg=None):
@@ -43,22 +47,50 @@ class LeafletRenderer(Renderer):
 
         return leaflet_style
 
+    def _svg_path(self, pathcodes, data):
+        """ Return the SVG path's 'd' element. """
+        def gen_path_elements(pathcodes, data):
+            counts = {'M': 1, 'L': 1, 'C': 3, 'Z': 0}
+            it = iter(data)
+            for code in pathcodes:
+                yield code
+                for _ in range(counts[code]):
+                    p = it.next()
+                    yield str(p[0])
+                    yield str(p[1])
+
+        return ' '.join(gen_path_elements(pathcodes, data))
+
 
     def draw_path(self, data, coordinates, pathcodes, style,
                   offset=None, offset_coordinates="data", mplobj=None):
-        if self.transformfunc:
-            data = [self.transformfunc(*c) for c in data]
-        else:
-            data = [c.tolist() for c in data]
-        rings = list(iter_rings(data, pathcodes))
+        if coordinates == 'points':
+            path_points = data
+            if offset_coordinates != 'data':
+                pass  # Don't know how to work with this yet
+            if self.transformfunc:
+                coords = self.transformfunc(offset)
+            else:
+                coords = list(offset)
+            geometry_type = 'Point'
 
-        if style['facecolor'] != 'none':
-            # It's a polygon
-            geometry_type = 'Polygon'
-            coords = rings
+            path = self._svg_path(pathcodes, path_points)
+            properties = {'html': svg_template.render(path=path)}
         else:
-            geometry_type = 'LineString'
-            coords = rings[0]
+            if self.transformfunc:
+                data = [self.transformfunc(*c) for c in data]
+            else:
+                data = [c.tolist() for c in data]
+            rings = list(iter_rings(data, pathcodes))
+
+            if style['facecolor'] != 'none':
+                # It's a polygon
+                geometry_type = 'Polygon'
+                coords = rings
+            else:
+                geometry_type = 'LineString'
+                coords = rings[0]
+            properties = self._convert_style(style)
 
         feature = {
             "type": "Feature",
@@ -66,7 +98,7 @@ class LeafletRenderer(Renderer):
                 "type": geometry_type,
                 "coordinates": coords,
             },
-            "properties": self._convert_style(style)
+            "properties": properties
         }
 
         self._features.append(feature)
