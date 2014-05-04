@@ -13,6 +13,43 @@ env = Environment(loader=PackageLoader('mplleaflet', 'templates'),
 
 def fig_to_html(fig=None, template='base.html', tiles=None, crs=None, 
                 epsg=None):
+    """
+    Convert a Matplotlib Figure to a Leaflet map
+
+    Parameters
+    ----------
+    fig : figure, default gcf()
+        Figure used to convert to map
+    template : string, default 'base.html'
+        The Jinja2 template to use
+    tiles : string or tuple
+        The tiles argument is used to control the map tile source in the
+        Leaflet map. Several simple shortcuts exist: 'osm', 'mapquest open',
+        and 'mapbox bright' may be specified to use those tiles.
+
+        The argument may be a tuple of two elements. The first element is the
+        tile URL to use in the map's TileLayer, the second argument is the
+        attribution to display.  See
+        http://leafletjs.com/reference.html#tilelayer for more information on
+        formatting the URL.
+
+        See also maptiles.mapbox() for specifying Mapbox tiles based on a
+        Mapbox map ID.
+    crs : dict, default assumes lon/lat
+        pyproj definition of the current figure. If None, then it is assumed
+        the plot is longitude, latitude in X, Y.
+    epsg : int, default 4326
+        The EPSG code of the current plot. This can be used in place of the
+        'crs' parameter.
+
+    Note: only one of 'crs' or 'epsg' may be specified. Both may be None, in
+    which case the plot is assumed to be longitude / latitude.
+
+    Returns
+    -------
+    String of html of the resulting webpage
+
+    """
     if tiles is None:
         tiles = maptiles.osm
     elif isinstance(tiles, basestring):
@@ -49,6 +86,12 @@ def fig_to_geojson(fig=None, **kwargs):
     """
     Returns a figure's GeoJSON representation as a dictionary
 
+    All arguments passed to fig_to_html()
+
+    Returns
+    -------
+    GeoJSON dictionary
+
     """
     renderer = LeafletRenderer(**kwargs)
     exporter = Exporter(renderer)
@@ -57,7 +100,7 @@ def fig_to_geojson(fig=None, **kwargs):
     return renderer.geojson()
 
 
-def save_html(fig=None, fileobj='map.html', **kwargs):
+def save_html(fig=None, fileobj='_map.html', **kwargs):
     if isinstance(fileobj, str):
         fileobj = open(fileobj, 'w')
     if not hasattr(fileobj, 'write'):
@@ -68,6 +111,17 @@ def save_html(fig=None, fileobj='map.html', **kwargs):
 
 
 def display(fig=None, closefig=True, **kwargs):
+    """
+    Convert a Matplotlib Figure to a Leaflet map. Embed in IPython notebook.
+
+    Parameters
+    ----------
+    fig : figure, default gcf()
+        Figure used to convert to map
+    closefig : boolean, default True
+        Close the current Figure
+    
+    """
     from IPython.display import HTML
     if fig is None:
         fig = plt.gcf()
@@ -79,6 +133,19 @@ def display(fig=None, closefig=True, **kwargs):
 
 
 def show(fig=None, path='_map.html', **kwargs):
+    """
+    Convert a Matplotlib Figure to a Leaflet map. Open in a browser
+
+    Parameters
+    ----------
+    fig : figure, default gcf()
+        Figure used to convert to map
+    path : string, default '_map.html'
+        Filename where output html will be saved
+
+    See fig_to_html() for description of keyword args.
+
+    """
     import webbrowser
     fullpath = os.path.abspath(path)
     with open(fullpath, 'w') as f:
