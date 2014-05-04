@@ -24,7 +24,8 @@ var gj = L.geoJson(gjData, {
   },
   pointToLayer: function (feature, latlng) {
     var icon = L.divIcon({'html': feature.properties.html, 
-        iconAnchor: [200, 200], 
+      iconAnchor: [feature.properties.width / 2.0 , 
+                   feature.properties.height / 2.0], 
         className: 'empty'});  // What can I do about empty?
     return L.marker(latlng, {icon: icon});
   }
