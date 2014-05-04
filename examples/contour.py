@@ -43,4 +43,4 @@ crs = {'lon_0': -105.0,
 
 root, ext = os.path.splitext(__file__)
 mapfile = root  + '.html'
-mplleaflet.show(crs=crs, path=mapfile, tiles='mapbox_bright')
+mplleaflet.show(crs=crs, path=mapfile, tiles='mapbox bright')

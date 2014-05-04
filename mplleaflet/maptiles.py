@@ -16,7 +16,7 @@ mapbox_bright = (
 tiles = {
     'osm': osm,
     'mapquest open': mapquest_open,
-    'mapbox_bright': mapbox_bright,
+    'mapbox bright': mapbox_bright,
 }
 
 _mb_url = 'http://{{s}}.tiles.mapbox.com/v3/{mapid}/{{z}}/{{x}}/{{y}}.png'
