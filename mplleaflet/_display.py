@@ -8,6 +8,8 @@ from jinja2 import Environment, PackageLoader
 from leaflet_renderer import LeafletRenderer
 import maptiles
 
+_attribution = '<a href="https://github.com/jwass/mplleaflet">mplleaflet</a>'
+
 env = Environment(loader=PackageLoader('mplleaflet', 'templates'),
                   trim_blocks=True, lstrip_blocks=True)
 
@@ -68,6 +70,9 @@ def fig_to_html(fig=None, template='base.html', tiles=None, crs=None,
     exporter = Exporter(renderer)
     exporter.run(fig)
 
+    
+    attribution = _attribution + ' | ' + tiles[1]
+
     gjdata = json.dumps(renderer.geojson())
     params = {
         'geojson': gjdata,
@@ -75,7 +80,7 @@ def fig_to_html(fig=None, template='base.html', tiles=None, crs=None,
         'height': fig.get_figheight()*dpi,
         'mapid': '0',
         'tile_url': tiles[0],
-        'attribution': tiles[1],
+        'attribution': attribution,
     }
     html = template.render(params)
 
