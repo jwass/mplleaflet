@@ -1,36 +1,60 @@
-mplleaflet
-==========
-mplleaflet turns [matplotlib](http://matplotlib.org) plots into a webpage
-containing a [Leaflet](http://leafletjs.com) map that can be zoomed and
-panned. mplleaflet can also embed the Leaflet map in an IPython notebook.
+# mplleaflet
 
-The goal of mplleaflet is to allow all matplotlib plotting commands to be
-converted to Leaflet. You can use plot() with normal styling options,
-contour(), quiver(), etc.
+mplleaflet is a Python library that converts a [matplotlib](http://matplotlib.org) plot into a webpage
+containing a pannable, zoomable [Leaflet](http://leafletjs.com) map. It can also [embed the Leaflet map in an IPython notebook](http://nbviewer.ipython.org/github/jwass/mplleaflet/blob/master/examples/NYC%20Boroughs.ipynb). The goal of mplleaflet is to enable use of Python and matplotlib for visualizing geographic data on [slippy maps](http://wiki.openstreetmap.org/wiki/Slippy_Map) without having to write any Javascript or HTML. You also don't need to worry about the displaying the base map content. Only one line of code is needed to convert a plot into a web map.
 
-Internally mplleaflet uses [mplexporter](https://github.com/mpld3/mplexporter)
-to walk matplotlib figures.
+The library is heavily inspired by [mpld3](https://github.com/jakevdp/mpld3) and uses  [mplexporter](https://github.com/mpld3/mplexporter) to do most of the heavy lifting to walk through Figure objects.
 
-Why mplleaflet?
----------------
+## Examples
+### Basic usage
+The simplest use is to just create your plot using matplotlib commands and call `mplleaflet.show()`.
+
+```
+>>> import matplotlib.pyplot as plt
+... # Load longitude, latitude data
+>>> plt.hold(True)
+# Plot the data as a blue line with red squares on top
+# Just plot longitude vs. latitude
+>>> plt.plot(longitude, latitude, 'b') # Draw blue line
+>>> plt.plot(longitude, latitude, 'rs') # Draw red squares
+```
+![matplotlib x,y plot](examples/images/simple_plot.png)
+
+Normally, displaying data as longitude, latitude will cause a cartographer to cry. That's totally fine with mplleaflet, Leaflet will project your data properly.
+
+```
+# Convert to interactive Leaflet map
+>>> import mplleaflet
+>>> mplleaflet.show()
+```
+
+[Click to view final web page](http://htmlpreview.github.io/?https://github.com/jwass/mplleaflet/master/examples/readme_example.html)
+
+![Leaflet map preview](examples/images/simple_plot_map_preview.jpg)
+
+Disclaimer: Displaying data in spherical mercator might also cause a cartographer to cry.
+
+`show()` allows you to specify different tile layer URLs, CRS/EPSG codes, output files, etc. 
+
+### IPython Notebook embedding
+Just use  `mplleaflet.display()` to embed the interactive Leaflet map in an IPython notebook.
+[Click here to see a live example.](http://nbviewer.ipython.org/github/jwass/mplleaflet/blob/master/examples/NYC%20Boroughs.ipynb)
+
+### Other examples
+* [basic_plot.py](examples/basic_plot.py): Simple line/point plotting. [View the map](http://htmlpreview.github.io/?https://github.com/jwass/mplleaflet/master/examples/basic_plot.html).
+* [quiver.py](examples/quiver.py): Demonstrates use of quiver() to plot 2-D arrows. [View the map](http://htmlpreview.github.io/?https://github.com/jwass/mplleaflet/master/examples/quiver.html).
+* [contour.py](examples/contour.py): Compute contour curves. This example demonstrates plotting in a different CRS and letting mplleaflet convert the output. [View the map](http://htmlpreview.github.io/?https://github.com/jwass/mplleaflet/master/examples/contour.html).
+* [Embedded IPython notebook example](http://nbviewer.ipython.org/github/jwass/mplleaflet/blob/master/examples/NYC%20Boroughs.ipynb)
+
+## Why mplleaflet?
 Other Python libraries, [basemap](http://matplotlib.org/basemap/) and
-[folium](https://github.com/wrobstory/folium), exist to create maps with
-either matplotlib or Leaflet. However these generally require learning a new
-API for plotting data or the user is required to set up and generate all the
-background data plotted on the map.
+[folium](https://github.com/wrobstory/folium), exist to create maps in Python. However mplleaflet allows you to leverage  all matplotlib capability without having to set up the background basemap. You can use `plot()` to style points and lines, and you can also use more complex functions like `contour()`, `quiver()`, etc. Furthermore, with mplleaflet you no longer have to worry about setting up the basemap. Displaying continents or roads is determined automatically by the zoom level required to view the physical size of the data. You should use a different library if you need fine control over the basemap, or need a geographic projection other than spherical mercator.
 
-Examples
---------
-The examples
-
-* [Plot New York City boroughs in IPython
-  notebook](http://nbviewer.ipython.org/github/jwass/mplleaflet/blob/master/examples/NYC%20Boroughs.ipynb)
-
-Dependencies
-------------
+## Dependencies
 Required
 * [mplexporter](https://github.com/mpld3/mplexporter)
 * [jinja2](http://jinja.pocoo.org/)
+* [pyproj](https://code.google.com/p/pyproj/) Not needed if you only use WGS-84 projections.
 
-Optional: Used by a few examples
+Optional
 * [GeoPandas](https://github.com/kjordahl/geopandas)
