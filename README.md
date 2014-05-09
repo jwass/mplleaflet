@@ -54,7 +54,7 @@ Other Python libraries, [basemap](http://matplotlib.org/basemap/) and
 Required
 * [mplexporter](https://github.com/mpld3/mplexporter)
 * [jinja2](http://jinja.pocoo.org/)
-* [pyproj](https://code.google.com/p/pyproj/) Not needed if you only use WGS-84 projections.
 
 Optional
-* [GeoPandas](https://github.com/kjordahl/geopandas)
+* [pyproj](https://code.google.com/p/pyproj/) Only needed if you only use non-WGS-84 projections.
+* [GeoPandas](https://github.com/kjordahl/geopandas) To make your life easier.
