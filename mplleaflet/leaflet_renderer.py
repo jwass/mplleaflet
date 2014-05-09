@@ -66,8 +66,6 @@ class LeafletRenderer(Renderer):
         """ 
         Return the SVG path's 'd' element.
     
-        Note that SVG's coordinate system is flipped about the 
-        y-axis.
         """
         def gen_path_elements(pathcodes, data):
             counts = {'M': 1, 'L': 1, 'C': 3, 'Z': 0}
@@ -86,6 +84,8 @@ class LeafletRenderer(Renderer):
                   offset=None, offset_coordinates="data", mplobj=None):
         properties = self._convert_style(style)
         if coordinates == 'points' or coordinates == 'display':
+            # Flip the points about y-axis to align with SVG coordinate
+            # system.
             path_points = data.copy()
             path_points[:,1] *= -1
             if offset_coordinates != 'data':
