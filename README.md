@@ -1,7 +1,10 @@
 # mplleaflet
 
 mplleaflet is a Python library that converts a [matplotlib](http://matplotlib.org) plot into a webpage
-containing a pannable, zoomable [Leaflet](http://leafletjs.com) map. It can also [embed the Leaflet map in an IPython notebook](http://nbviewer.ipython.org/github/jwass/mplleaflet/blob/master/examples/NYC%20Boroughs.ipynb). The goal of mplleaflet is to enable use of Python and matplotlib for visualizing geographic data on [slippy maps](http://wiki.openstreetmap.org/wiki/Slippy_Map) without having to write any Javascript or HTML. You also don't need to worry about the displaying the base map content. Only one line of code is needed to convert a plot into a web map.
+containing a pannable, zoomable [Leaflet](http://leafletjs.com) map. It can also [embed the Leaflet map in an IPython notebook](http://nbviewer.ipython.org/github/jwass/mplleaflet/blob/master/examples/NYC%20Boroughs.ipynb). The goal of mplleaflet is to enable use of Python and matplotlib for visualizing geographic data on [slippy maps](http://wiki.openstreetmap.org/wiki/Slippy_Map) without having to write any Javascript or HTML. You also don't need to worry about choosing the base map content i.e., coastlines, roads, etc.
+
+*Only one line of code is needed to convert a plot into a web map.*
+`mplleaflet.show()`
 
 The library is heavily inspired by [mpld3](https://github.com/jakevdp/mpld3) and uses  [mplexporter](https://github.com/mpld3/mplexporter) to do most of the heavy lifting to walk through Figure objects.
 
