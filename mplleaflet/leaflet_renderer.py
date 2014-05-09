@@ -7,7 +7,9 @@ import numpy as np
 from utils import iter_rings
 
 
-svg_template = Template("""<svg width="{{ width }}px" height="{{ height }}px" viewBox="-{{ width / 2 }} -{{ height / 2 }} {{ width }} {{ height }}" xmlns="http://www.w3.org/2000/svg" version="1.1">  <path d="{{ path }}" {% for k, v in style.iteritems() %}{{ k }}="{{ v }}" {% endfor %}/></svg>""")
+svg_template = Template("""<svg width="{{ width|int }}px" height="{{ height|int }}px" viewBox="{{ minx }} {{ miny }} {{ width }} {{ height }}" xmlns="http://www.w3.org/2000/svg" version="1.1">  <path d="{{ path }}" {% for k, v in style.iteritems() %}{{ k }}="{{ v }}" {% endfor %}/></svg>""")
+
+_marker_inflation = 1.25
 
 class LeafletRenderer(Renderer):
     def __init__(self, crs=None, epsg=None):
@@ -75,7 +77,7 @@ class LeafletRenderer(Renderer):
                 for _ in range(counts[code]):
                     p = it.next()
                     yield str(p[0])
-                    yield str(-p[1])
+                    yield str(p[1])
 
         return ' '.join(gen_path_elements(pathcodes, data))
 
@@ -84,7 +86,8 @@ class LeafletRenderer(Renderer):
                   offset=None, offset_coordinates="data", mplobj=None):
         properties = self._convert_style(style)
         if coordinates == 'points' or coordinates == 'display':
-            path_points = data
+            path_points = data.copy()
+            path_points[:,1] *= -1
             if offset_coordinates != 'data':
                 pass  # Don't know how to work with this yet
             if self.transformfunc:
@@ -93,18 +96,24 @@ class LeafletRenderer(Renderer):
                 coords = list(offset)
             geometry_type = 'Point'
 
-            # Find the size of the path, and increase 25%
-            size = np.ceil(1.25 * np.ptp(path_points, axis=0))
-            width = int(size[0])
-            height = int(size[1])
-            path = self._svg_path(pathcodes, path_points)
-            svg_style = self._convert_style_svg(style)
-            properties = {'html': svg_template.render(path=path, 
-                                                      style=svg_style,
-                                                      width=width,
-                                                      height=height),
-                          'width': width,
-                          'height': height}
+            # Find the size of the path, and increase by inflation
+            mx = np.max(path_points, axis=0)
+            mn = np.min(path_points, axis=0)
+
+            center = mn + (mx - mn) / 2.0
+            size = np.ceil(_marker_inflation * (mx - mn))
+            corner = center - size / 2.0
+            svg = svg_template.render(
+                path=self._svg_path(pathcodes, path_points),
+                style=self._convert_style_svg(style),
+                width=size[0],
+                height=size[1],
+                minx=corner[0],
+                miny=corner[1],
+            )
+            properties = {'html': svg,
+                          'anchor_x': -corner[0],
+                          'anchor_y': -corner[1]}
         else:
             if self.transformfunc:
                 data = [self.transformfunc(*c) for c in data]
