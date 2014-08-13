@@ -1,5 +1,6 @@
 import json
 import os
+import uuid
 
 import matplotlib.pyplot as plt
 from mplexporter.exporter import Exporter
@@ -13,7 +14,7 @@ _attribution = '<a href="https://github.com/jwass/mplleaflet">mplleaflet</a>'
 env = Environment(loader=PackageLoader('mplleaflet', 'templates'),
                   trim_blocks=True, lstrip_blocks=True)
 
-def fig_to_html(fig=None, template='base.html', tiles=None, crs=None, 
+def fig_to_html(fig=None, template='base.html', tiles=None, crs=None,
                 epsg=None):
     """
     Convert a Matplotlib Figure to a Leaflet map
@@ -60,7 +61,7 @@ def fig_to_html(fig=None, template='base.html', tiles=None, crs=None,
         else:
             tiles = maptiles.tiles[tiles]
 
-    template = env.get_template(template) 
+    template = env.get_template(template)
 
     if fig is None:
         fig = plt.gcf()
@@ -70,15 +71,16 @@ def fig_to_html(fig=None, template='base.html', tiles=None, crs=None,
     exporter = Exporter(renderer)
     exporter.run(fig)
 
-    
     attribution = _attribution + ' | ' + tiles[1]
+
+    mapid = str(uuid.uuid4()).replace('-', '')
 
     gjdata = json.dumps(renderer.geojson())
     params = {
         'geojson': gjdata,
         'width': fig.get_figwidth()*dpi,
         'height': fig.get_figheight()*dpi,
-        'mapid': '0',
+        'mapid': mapid,
         'tile_url': tiles[0],
         'attribution': attribution,
     }
@@ -125,7 +127,7 @@ def display(fig=None, closefig=True, **kwargs):
         Figure used to convert to map
     closefig : boolean, default True
         Close the current Figure
-    
+
     """
     from IPython.display import HTML
     if fig is None:
