@@ -140,6 +140,10 @@ class LeafletRenderer(Renderer):
 
         self._features.append(feature)
 
+    def draw_text(self, *args, **kwargs):
+        """ Don't draw the text for now, but don't crash """
+        pass
+
 
 def _crs_from_epsg(epsg):
     epsgstr = 'epsg:{}'.format(epsg)
