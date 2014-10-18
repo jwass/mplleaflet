@@ -6,8 +6,8 @@ import matplotlib.pyplot as plt
 from mplexporter.exporter import Exporter
 from jinja2 import Environment, PackageLoader
 
-from leaflet_renderer import LeafletRenderer
-import maptiles
+from .leaflet_renderer import LeafletRenderer
+import mplleaflet.maptiles as maptiles
 
 _attribution = '<a href="https://github.com/jwass/mplleaflet">mplleaflet</a>'
 

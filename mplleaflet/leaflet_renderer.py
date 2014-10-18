@@ -4,7 +4,7 @@ from jinja2 import Template
 from mplexporter.renderers.base import Renderer
 import numpy as np
 
-from utils import iter_rings
+from mplleaflet.utils import iter_rings
 
 
 svg_template = Template("""<svg width="{{ width|int }}px" height="{{ height|int }}px" viewBox="{{ minx }} {{ miny }} {{ width }} {{ height }}" xmlns="http://www.w3.org/2000/svg" version="1.1">  <path d="{{ path }}" {% for k, v in style.iteritems() %}{{ k }}="{{ v }}" {% endfor %}/></svg>""")
@@ -47,7 +47,11 @@ class LeafletRenderer(Renderer):
         if style['facecolor'] != 'none':
             leaflet_style['fillColor'] = style['facecolor']
         if style['dasharray'] != 'none':
-            leaflet_style['dashArray'] = style['dasharray']
+            dashes = style['dasharray'].split(',')
+            # Sometimes the dashpattern is not needed like:
+            # 10,0
+            if not (len(dashes) == 2 and float(dashes[1]) == 0.0):
+                leaflet_style['dashArray'] = style['dasharray']
 
         return leaflet_style
 

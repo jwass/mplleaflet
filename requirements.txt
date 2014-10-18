@@ -1,4 +1,5 @@
 # Put proper version numbers here, especially once mplexporter is pushed
 # to PyPI
 jinja2
+matplotlib
 git+git://github.com/mpld3/mplexporter.git@23d511a18f9d7700a8b34b635121b0b05926b98f
