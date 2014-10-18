@@ -46,6 +46,7 @@ class LeafletRenderer(Renderer):
         }
         if style['facecolor'] != 'none':
             leaflet_style['fillColor'] = style['facecolor']
+            leaflet_style['fillOpacity'] = style['alpha']
         if style['dasharray'] != 'none':
             dashes = style['dasharray'].split(',')
             # Sometimes the dashpattern is not needed like:
@@ -87,7 +88,6 @@ class LeafletRenderer(Renderer):
 
     def draw_path(self, data, coordinates, pathcodes, style,
                   offset=None, offset_coordinates="data", mplobj=None):
-        properties = self._convert_style(style)
         if coordinates == 'points' or coordinates == 'display':
             # Flip the points about y-axis to align with SVG coordinate
             # system.
@@ -130,6 +130,10 @@ class LeafletRenderer(Renderer):
                 # It's a polygon
                 geometry_type = 'Polygon'
                 coords = rings
+                # Make sure rings are closed
+                for c in coords:
+                    if c[-1] != c[0]:
+                        c.append(c[0])
             else:
                 geometry_type = 'LineString'
                 coords = rings[0]
@@ -140,7 +144,7 @@ class LeafletRenderer(Renderer):
                 "type": geometry_type,
                 "coordinates": coords,
             },
-            "properties": properties
+            "properties": self._convert_style(style)
         }
 
         self._features.append(feature)

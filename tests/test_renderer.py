@@ -47,13 +47,24 @@ class BaseTestCase(unittest.TestCase):
 
     def geom_equal(self, first, second):
         # mplleaflet won't output Mult* geom types
-        eq = ((first['type'] == second['type']) and
-              np.allclose(first['coordinates'], second['coordinates']))
+        if first['type'] != second['type']:
+            return False
 
-        return eq
+        if first['type'] != 'Polygon':
+            return self.line_equal(first['coordinates'], second['coordinates'])
+
+        # Polygon
+        for fc, sc in zip(first['coordinates'], second['coordinates']):
+            if not self.line_equal(fc, sc):
+                return False
+        
+        return True
 
     def props_equal(self, first, second):
         return first == second
+
+    def line_equal(self, first, second):
+        return len(first) == len(second) and np.allclose(first, second)
 
     def setUp(self):
         self.coords = np.array([[1, 4], [2, 5], [3, 2]], dtype='float')
@@ -97,6 +108,21 @@ class BaseTestCase(unittest.TestCase):
             feat('LineString', self.coords.tolist(),
                 {'color': color, 'opacity': 1, 'weight': 1.0,
                  'dashArray': ','.join(str(int(v)) for v in dashes)}),
+        ])
+        self.assertFeaturesEqual(expected)
+
+    def test_polygon(self):
+        color = '#123ABC'
+        face = '#456DEF'
+        alpha = 0.6
+        square = np.array([[0, 0], [1, 0], [1, 1], [0, 1], [0, 0]])
+        coords = 30.0 * square + 45.0
+        plt.fill(coords[:, 0], coords[:, 1], edgecolor=color, facecolor=face,
+                 alpha=alpha)
+        expected = fc([
+            feat('Polygon', [coords.tolist()],
+                 {'color': color, 'opacity': alpha, 'weight': 1.0, 
+                  'fillColor': face, 'fillOpacity': alpha})
         ])
         self.assertFeaturesEqual(expected)
 
