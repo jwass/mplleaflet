@@ -43,10 +43,11 @@ class LeafletRenderer(Renderer):
             'color': style['edgecolor'],
             'weight': style['edgewidth'],
             'opacity': style['alpha'],
-            'dashArray': style['dasharray'],
         }
         if style['facecolor'] != 'none':
             leaflet_style['fillColor'] = style['facecolor']
+        if style['dasharray'] != 'none':
+            leaflet_style['dashArray'] = style['dasharray']
 
         return leaflet_style
 
