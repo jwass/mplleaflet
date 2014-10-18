@@ -100,6 +100,8 @@ def fig_to_geojson(fig=None, **kwargs):
     GeoJSON dictionary
 
     """
+    if fig is None:
+        fig = plt.gcf()
     renderer = LeafletRenderer(**kwargs)
     exporter = Exporter(renderer)
     exporter.run(fig)
