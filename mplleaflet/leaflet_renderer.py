@@ -89,36 +89,14 @@ class LeafletRenderer(Renderer):
     def draw_path(self, data, coordinates, pathcodes, style,
                   offset=None, offset_coordinates="data", mplobj=None):
         if coordinates == 'points' or coordinates == 'display':
-            # Flip the points about y-axis to align with SVG coordinate
-            # system.
-            path_points = data.copy()
-            path_points[:,1] *= -1
             if offset_coordinates != 'data':
                 pass  # Don't know how to work with this yet
             if self.transformfunc:
                 coords = self.transformfunc(*offset)
             else:
                 coords = list(offset)
-            geometry_type = 'Point'
 
-            # Find the size of the path, and increase by inflation
-            mx = np.max(path_points, axis=0)
-            mn = np.min(path_points, axis=0)
-
-            center = mn + (mx - mn) / 2.0
-            size = np.ceil(_marker_inflation * (mx - mn))
-            corner = center - size / 2.0
-            svg = svg_template.render(
-                path=self._svg_path(pathcodes, path_points),
-                style=self._convert_style_svg(style),
-                width=size[0],
-                height=size[1],
-                minx=corner[0],
-                miny=corner[1],
-            )
-            properties = {'html': svg,
-                          'anchor_x': -corner[0],
-                          'anchor_y': -corner[1]}
+            self.add_marker(coords, data, pathcodes, style)
         else:
             if self.transformfunc:
                 data = [self.transformfunc(*c) for c in data]
@@ -128,30 +106,82 @@ class LeafletRenderer(Renderer):
 
             if style['facecolor'] != 'none':
                 # It's a polygon
-                geometry_type = 'Polygon'
                 coords = rings
                 # Make sure rings are closed
                 for c in coords:
                     if c[-1] != c[0]:
                         c.append(c[0])
+
+                self.add_polygon(coords, style)
             else:
-                geometry_type = 'LineString'
                 coords = rings[0]
 
-        feature = {
-            "type": "Feature",
-            "geometry": {
-                "type": geometry_type,
-                "coordinates": coords,
-            },
-            "properties": self._convert_style(style)
-        }
+                self.add_linestring(coords, style)
 
-        self._features.append(feature)
 
     def draw_text(self, *args, **kwargs):
         """ Don't draw the text for now, but don't crash """
         pass
+
+    def add_marker(self, coords, path, pathcodes, style):
+        # Flip the points about y-axis to align with SVG coordinate
+        # system.
+        path = path.copy()
+        path[:,1] *= -1
+
+        # Find the size of the path, and increase by inflation
+        mx = np.max(path, axis=0)
+        mn = np.min(path, axis=0)
+
+        center = mn + (mx - mn) / 2.0
+        size = np.ceil(_marker_inflation * (mx - mn))
+        corner = center - size / 2.0
+        svg = svg_template.render(
+            path=self._svg_path(pathcodes, path),
+            style=self._convert_style_svg(style),
+            width=size[0],
+            height=size[1],
+            minx=corner[0],
+            miny=corner[1],
+        )
+        properties = {'html': svg,
+                      'anchor_x': -corner[0],
+                      'anchor_y': -corner[1]}
+
+        feature = {
+            'type': 'Feature',
+            'geometry': {
+                'type': 'Point',
+                'coordinates': coords,
+            },
+            'properties': properties,
+        }
+
+        self._features.append(feature)
+
+    def add_linestring(self, coords, style):
+        feature = {
+            'type': 'Feature',
+            'geometry': {
+                'type': 'LineString',
+                'coordinates': coords,
+            },
+            'properties': self._convert_style(style)
+        }
+
+        self._features.append(feature)
+
+    def add_polygon(self, coords, style):
+        feature = {
+            'type': 'Feature',
+            'geometry': {
+                'type': 'Polygon',
+                'coordinates': coords,
+            },
+            'properties': self._convert_style(style)
+        }
+
+        self._features.append(feature)
 
 
 def _crs_from_epsg(epsg):
