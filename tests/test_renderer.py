@@ -16,13 +16,20 @@ import matplotlib.pyplot as plt
 import numpy as np
 
 import mplleaflet
+from mplleaflet.leaflet_renderer import LeafletRenderer
 
-class BaseTestCase(unittest.TestCase):
-    def assertFeaturesEqual(self, expected, msg=None, fig=None, **kwargs):
+
+class MPLLeafletTestCase(unittest.TestCase):
+    def setUp(self):
+        self.coords = np.array([[1, 4], [2, 5], [3, 2]], dtype='float')
+
+    def assertPlotEqual(self, expected, msg=None, fig=None, **kwargs):
         if fig is None:
             fig = plt.gcf()
         result = mplleaflet.fig_to_geojson(fig, **kwargs)
+        self.assertFCEqual(expected, result)
 
+    def assertFCEqual(self, expected, result):
         self.assertEqual(result['type'], 'FeatureCollection')
         self.assertEqual(len(result['features']), len(expected['features']))
 
@@ -57,7 +64,7 @@ class BaseTestCase(unittest.TestCase):
         for fc, sc in zip(first['coordinates'], second['coordinates']):
             if not self.line_equal(fc, sc):
                 return False
-        
+
         return True
 
     def props_equal(self, first, second):
@@ -65,9 +72,6 @@ class BaseTestCase(unittest.TestCase):
 
     def line_equal(self, first, second):
         return len(first) == len(second) and np.allclose(first, second)
-
-    def setUp(self):
-        self.coords = np.array([[1, 4], [2, 5], [3, 2]], dtype='float')
 
     def tearDown(self):
         plt.close()
@@ -79,7 +83,7 @@ class BaseTestCase(unittest.TestCase):
             feat('LineString', self.coords.tolist(),
                  {'color': color, 'opacity': 1, 'weight': 1.0}),
         ])
-        self.assertFeaturesEqual(expected)
+        self.assertPlotEqual(expected)
 
     def test_multiple_lines(self):
         color1 = '#123ABC'
@@ -97,7 +101,7 @@ class BaseTestCase(unittest.TestCase):
             feat('LineString', coords2.tolist(),
                  {'color': color2, 'opacity': 1, 'weight': 4.5})
         ])
-        self.assertFeaturesEqual(expected)
+        self.assertPlotEqual(expected)
 
     def test_line_dash(self):
         color = '#123ABC'
@@ -106,10 +110,10 @@ class BaseTestCase(unittest.TestCase):
                  color=color, dashes=dashes)
         expected = fc([
             feat('LineString', self.coords.tolist(),
-                {'color': color, 'opacity': 1, 'weight': 1.0,
+                 {'color': color, 'opacity': 1, 'weight': 1.0,
                  'dashArray': ','.join(str(int(v)) for v in dashes)}),
         ])
-        self.assertFeaturesEqual(expected)
+        self.assertPlotEqual(expected)
 
     def test_polygon(self):
         color = '#123ABC'
@@ -121,10 +125,33 @@ class BaseTestCase(unittest.TestCase):
                  alpha=alpha)
         expected = fc([
             feat('Polygon', [coords.tolist()],
-                 {'color': color, 'opacity': alpha, 'weight': 1.0, 
+                 {'color': color, 'opacity': alpha, 'weight': 1.0,
                   'fillColor': face, 'fillOpacity': alpha})
         ])
-        self.assertFeaturesEqual(expected)
+        self.assertPlotEqual(expected)
+
+    def test_point(self):
+        r = LeafletRenderer()
+        coord = self.coords[0].tolist()
+        color = '#123ABC'
+        facecolor = '#456DEF'
+
+        # Let's make a diamond
+        path = np.array([[0, 1], [1, 0], [0, -1], [-1, 0]], dtype='float')
+        pathcodes = ['M', 'L', 'L', 'L']
+        style = {'edgecolor': color,
+                'edgewidth': 2.3,
+                'alpha': 0.6,
+                'facecolor': facecolor}
+        r.add_marker(coord, path, pathcodes, style)
+
+        gj = r.geojson()
+        expected = fc([
+            feat('Point', coord,
+                 {'anchor_x': 1.5, 'anchor_y': 1.5,
+                  'html': '<svg width="3px" height="3px" viewBox="-1.5 -1.5 3.0 3.0" xmlns="http://www.w3.org/2000/svg" version="1.1">  <path d="M 0.0 -1.0 L 1.0 -0.0 L 0.0 1.0 L -1.0 -0.0" fill-opacity="0.6" stroke="#123ABC" stroke-width="2.3" stroke-opacity="0.6" fill="#456DEF" /></svg>'})
+        ])
+        self.assertFCEqual(expected, gj)
 
     def test_text(self):
         # Test that text doesn't crash
@@ -137,7 +164,7 @@ class BaseTestCase(unittest.TestCase):
             feat('LineString', self.coords.tolist(),
                  {'color': color, 'opacity': 1, 'weight': 1.0}),
         ])
-        self.assertFeaturesEqual(expected)
+        self.assertPlotEqual(expected)
 
 
 def feat(gtype, coordinates, properties=None):
