@@ -33,6 +33,12 @@ stamen_wc = (
     'Map tiles by <a href="http://stamen.com">Stamen Design</a>, <a href="http://creativecommons.org/licenses/by/3.0">CC BY 3.0</a> &mdash; Map data &copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
 )
 
+cartodb_positron = (
+    'http://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png',
+    '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> &copy; <a href="http://cartodb.com/attributions">CartoDB</a>'
+)
+
+
 tiles = {
     'osm': osm,
     'mapquest open': mapquest_open,
@@ -41,7 +47,7 @@ tiles = {
     'esri_aerial': esri_aerial,
     'stamen_wc': stamen_wc,
     'esri_natgeo': esri_natgeo,
-    
+    'cartodb_positron': cartodb_positron,    
 }
 
 _mb_url = 'http://{{s}}.tiles.mapbox.com/v3/{mapid}/{{z}}/{{x}}/{{y}}.png'
