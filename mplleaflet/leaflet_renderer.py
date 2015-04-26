@@ -1,13 +1,15 @@
+from __future__ import absolute_import
+
 from functools import partial
 
 from jinja2 import Template
 from mplexporter.renderers.base import Renderer
 import numpy as np
 
-from utils import iter_rings
+from .utils import iter_rings
 
 
-svg_template = Template("""<svg width="{{ width|int }}px" height="{{ height|int }}px" viewBox="{{ minx }} {{ miny }} {{ width }} {{ height }}" xmlns="http://www.w3.org/2000/svg" version="1.1">  <path d="{{ path }}" {% for k, v in style.iteritems() %}{{ k }}="{{ v }}" {% endfor %}/></svg>""")
+svg_template = Template("""<svg width="{{ width|int }}px" height="{{ height|int }}px" viewBox="{{ minx }} {{ miny }} {{ width }} {{ height }}" xmlns="http://www.w3.org/2000/svg" version="1.1">  <path d="{{ path }}" {% for k, v in style.items() %}{{ k }}="{{ v }}" {% endfor %}/></svg>""")
 
 _marker_inflation = 1.25
 
@@ -74,7 +76,7 @@ class LeafletRenderer(Renderer):
             for code in pathcodes:
                 yield code
                 for _ in range(counts[code]):
-                    p = it.next()
+                    p = next(it)
                     yield str(p[0])
                     yield str(p[1])
 

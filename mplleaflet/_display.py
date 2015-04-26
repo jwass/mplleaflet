@@ -1,3 +1,5 @@
+from __future__ import absolute_import
+
 import json
 import os
 import uuid
@@ -6,8 +8,8 @@ import matplotlib.pyplot as plt
 from mplexporter.exporter import Exporter
 from jinja2 import Environment, PackageLoader
 
-from leaflet_renderer import LeafletRenderer
-import maptiles
+from .leaflet_renderer import LeafletRenderer
+from . import maptiles
 
 _attribution = '<a href="https://github.com/jwass/mplleaflet">mplleaflet</a>'
 
