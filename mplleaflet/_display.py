@@ -5,7 +5,7 @@ import os
 import uuid
 
 import matplotlib.pyplot as plt
-from mplexporter.exporter import Exporter
+from .mplexporter.exporter import Exporter
 from jinja2 import Environment, PackageLoader
 
 from .leaflet_renderer import LeafletRenderer
