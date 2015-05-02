@@ -1,1 +1,0 @@
-git+git://github.com/jwass/mplexporter.git@v0.0.1#egg=mplexporter

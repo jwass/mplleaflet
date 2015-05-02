@@ -29,7 +29,6 @@ setup(
     packages=find_packages(),
     package_data={'': ['*.html']}, # Include the templates
     install_requires=[
-        "mplexporter",
         "jinja2",
     ],
 )
