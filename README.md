@@ -53,9 +53,23 @@ Just use  `mplleaflet.display()` to embed the interactive Leaflet map in an IPyt
 Other Python libraries, [basemap](http://matplotlib.org/basemap/) and
 [folium](https://github.com/wrobstory/folium), exist to create maps in Python. However mplleaflet allows you to leverage  all matplotlib capability without having to set up the background basemap. You can use `plot()` to style points and lines, and you can also use more complex functions like `contour()`, `quiver()`, etc. Furthermore, with mplleaflet you no longer have to worry about setting up the basemap. Displaying continents or roads is determined automatically by the zoom level required to view the physical size of the data. You should use a different library if you need fine control over the basemap, or need a geographic projection other than spherical mercator.
 
+## Installation
+Install `mplleaflet` from PyPI using `$ pip install mplleaflet`.
+
+## Development
+If developing for `mplleaflet`, `mplexporter` is a git submodule with its
+Python package files placed under the `mplleaflet` package. The Makefile
+copies the files into the appropriate location.
+
+```
+$ git submodule init
+$ git submodule update
+$ make
+$ pip install -e .
+
+```
+
 ## Dependencies
-Required
-* [mplexporter](https://github.com/mpld3/mplexporter)
 * [jinja2](http://jinja.pocoo.org/)
 
 Optional
