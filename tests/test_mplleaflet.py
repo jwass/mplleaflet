@@ -2,7 +2,7 @@ import matplotlib.pyplot as plt
 import mplleaflet
 
 def test_basic():
-    plt.plot([0, 0], [1, 1])
+    plt.plot([0, 1], [0, 1])
     mplleaflet.fig_to_html()
 
 
