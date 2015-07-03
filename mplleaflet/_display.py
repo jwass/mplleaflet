@@ -9,15 +9,19 @@ from .mplexporter.exporter import Exporter
 from jinja2 import Environment, PackageLoader
 
 from .leaflet_renderer import LeafletRenderer
+from .links import JavascriptLink, CssLink
 from . import maptiles
 
+# We download explicitely the CSS and the JS
+_leaflet_js = JavascriptLink('https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.3/leaflet.js')
+_leaflet_css = CssLink('https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.3/leaflet.css')
 _attribution = '<a href="https://github.com/jwass/mplleaflet">mplleaflet</a>'
 
 env = Environment(loader=PackageLoader('mplleaflet', 'templates'),
                   trim_blocks=True, lstrip_blocks=True)
 
 def fig_to_html(fig=None, template='base.html', tiles=None, crs=None,
-                epsg=None):
+                epsg=None, embed_links=False):
     """
     Convert a Matplotlib Figure to a Leaflet map
 
@@ -46,6 +50,8 @@ def fig_to_html(fig=None, template='base.html', tiles=None, crs=None,
     epsg : int, default 4326
         The EPSG code of the current plot. This can be used in place of the
         'crs' parameter.
+    embed_links : bool, default False
+        Whether external links (except tiles) shall be explicitely embedded in the final html.
 
     Note: only one of 'crs' or 'epsg' may be specified. Both may be None, in
     which case the plot is assumed to be longitude / latitude.
@@ -85,6 +91,8 @@ def fig_to_html(fig=None, template='base.html', tiles=None, crs=None,
         'mapid': mapid,
         'tile_url': tiles[0],
         'attribution': attribution,
+        'links': [_leaflet_js,_leaflet_css],
+        'embed_links': embed_links,
     }
     html = template.render(params)
 
@@ -131,7 +139,6 @@ def display(fig=None, closefig=True, **kwargs):
         Figure used to convert to map
     closefig : boolean, default True
         Close the current Figure
-
     """
     from IPython.display import HTML
     if fig is None:
@@ -139,9 +146,15 @@ def display(fig=None, closefig=True, **kwargs):
     if closefig:
         plt.close(fig)
 
-    html = fig_to_html(fig, template="ipynb.html", **kwargs)
-    return HTML(html)
+    html = fig_to_html(fig, **kwargs)
 
+    # We embed everything in an iframe.
+    iframe_html = '<iframe src="data:text/html;base64,{html}" width="{width}" height="{height}"></iframe>'\
+    .format(html = html.encode('base64'),
+            width = int(60.*fig.get_figwidth()),
+            height= int(60.*fig.get_figheight()),
+           )
+    return HTML(iframe_html)
 
 def show(fig=None, path='_map.html', **kwargs):
     """
