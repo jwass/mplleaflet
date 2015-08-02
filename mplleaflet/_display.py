@@ -4,6 +4,8 @@ import json
 import os
 import uuid
 
+import six
+
 import matplotlib.pyplot as plt
 from .mplexporter.exporter import Exporter
 from jinja2 import Environment, PackageLoader
@@ -57,7 +59,7 @@ def fig_to_html(fig=None, template='base.html', tiles=None, crs=None,
     """
     if tiles is None:
         tiles = maptiles.osm
-    elif isinstance(tiles, basestring):
+    elif isinstance(tiles, six.string_types):
         if tiles not in maptiles.tiles:
             raise ValueError('Unknown tile source "{}"'.format(tiles))
         else:

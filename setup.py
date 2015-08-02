@@ -30,5 +30,6 @@ setup(
     package_data={'': ['*.html']}, # Include the templates
     install_requires=[
         "jinja2",
+        "six",
     ],
 )
