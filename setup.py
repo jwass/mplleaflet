@@ -12,7 +12,7 @@ MAINTAINER = "Jacob Wasserman"
 MAINTAINER_EMAIL = "jwasserman@gmail.com"
 DOWNLOAD_URL = 'http://github.com/jwass/mplleaflet'
 LICENSE = 'BSD 3-clause'
-VERSION = '0.0.1'
+VERSION = '0.0.2'
 
 setup(
     name=NAME,
