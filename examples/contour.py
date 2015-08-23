@@ -14,19 +14,20 @@ filename = os.path.join(os.path.dirname(__file__),
 df = gpd.read_file(filename)
 
 # Negative values are missing data so just drop them
-df = df[df['Globvalue'] > 0]
+df.rename(columns=lambda x: x.lower(), inplace=True)
+df = df[df['globvalue'] > 0]
 
 # Setting the index, then calling unstack() creates the matrix of values 
 # indexed by Hrapx in the columns, Hrapy in the rows. Try to do that in
 # MATLAB!
-df.set_index(['Hrapy', 'Hrapx'], inplace=True)
+df.set_index(['hrapy', 'hrapx'], inplace=True)
 df = df.unstack()
 
 # Sorting the values here is unnecessary, but do it just in case
 df.sort_index(axis=0, inplace=True)
 df.sort_index(axis=1, inplace=True)
 
-g = df['Globvalue']
+g = df['globvalue']
 plt.contour(4762.5 * (g.columns.values - 401), 
             4762.5 * (g.index.values - 1601), g)
 
