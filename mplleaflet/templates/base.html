@@ -1,6 +1,7 @@
 <head>
-  <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.7.1/leaflet.css" />
-  <script src="http://cdn.leafletjs.com/leaflet-0.7.1/leaflet.js"></script>
+  {% for link in links %}
+    {{link.render(embedded=embed_links)}}
+  {% endfor %}
   <style>
     {% block style %}
     #map{{ mapid }} {
