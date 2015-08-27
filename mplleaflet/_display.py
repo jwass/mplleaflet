@@ -153,7 +153,7 @@ def display(fig=None, closefig=True, **kwargs):
     # We embed everything in an iframe.
     iframe_html = '<iframe src="data:text/html;base64,{html}" width="{width}" height="{height}"></iframe>'\
     .format(html = html.encode('base64'),
-            width = int(60.*fig.get_figwidth()),
+            width = '100%',
             height= int(60.*fig.get_figheight()),
            )
     return HTML(iframe_html)
