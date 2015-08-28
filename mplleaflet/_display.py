@@ -131,7 +131,7 @@ def save_html(fig=None, fileobj='_map.html', **kwargs):
     fileobj.close()
 
 
-def display(fig=None, closefig=True, **kwargs):
+def display(fig=None, figsize=None, closefig=True, **kwargs):
     """
     Convert a Matplotlib Figure to a Leaflet map. Embed in IPython notebook.
 
@@ -139,22 +139,58 @@ def display(fig=None, closefig=True, **kwargs):
     ----------
     fig : figure, default gcf()
         Figure used to convert to map
+    figsize : tuple of (width,height) or string, default (None,None)
+        The width and height of the putput figure.
+        * If string is provided, then (figsize,None) is used
+        * If width is None, the figure size is used
+        * If height is None, it is computed from width and the figure aspect ratio.
+        Note that you can specify width and height in percent ("**%")
+        in pixel ("**px") or in inches (int).
     closefig : boolean, default True
         Close the current Figure
     """
     from IPython.display import HTML
+
+    if figsize is None:
+        figsize=(None,None)
+    elif not isinstance(figsize,tuple):
+        figsize=(figsize,None)
+
     if fig is None:
         fig = plt.gcf()
     if closefig:
         plt.close(fig)
+
+    if figsize[0]:
+        if isinstance(figsize[0],int):
+            width = figsize[0]*60
+        else:
+            width = figsize[0]
+    else:
+        width = int(60.*fig.get_figwidth())
+
+    if figsize[1]:
+        if isinstance(figsize[1],int):
+            height = figsize[1]*60
+        else:
+            height = figsize[1]
+    elif str(width).endswith('px'):
+        height = int(float(str(width).replace('px',''))*fig.get_figheight()/fig.get_figwidth())
+    elif str(width).endswith('%'):
+        height = int(float(str(width).replace('%',''))*fig.get_figheight()/fig.get_figwidth()*0.01*17*60)
+    else:
+        try:
+            height=int(float(str(width))*fig.get_figheight()/fig.get_figwidth())
+        except:
+            height=400
 
     html = fig_to_html(fig, **kwargs)
 
     # We embed everything in an iframe.
     iframe_html = '<iframe src="data:text/html;base64,{html}" width="{width}" height="{height}"></iframe>'\
     .format(html = html.encode('base64'),
-            width = '100%',
-            height= int(60.*fig.get_figheight()),
+            width = width,
+            height= height,
            )
     return HTML(iframe_html)
 
