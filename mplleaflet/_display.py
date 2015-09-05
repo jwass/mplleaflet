@@ -19,11 +19,8 @@ _leaflet_js = JavascriptLink('https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7
 _leaflet_css = CssLink('https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.3/leaflet.css')
 _attribution = '<a href="https://github.com/jwass/mplleaflet">mplleaflet</a>'
 
-env = Environment(loader=PackageLoader('mplleaflet', 'templates'),
-                  trim_blocks=True, lstrip_blocks=True)
-
 def fig_to_html(fig=None, template='base.html', tiles=None, crs=None,
-                epsg=None, embed_links=False):
+                epsg=None, embed_links=False, jinja2_env=None, template_params=None):
     """
     Convert a Matplotlib Figure to a Leaflet map
 
@@ -54,6 +51,11 @@ def fig_to_html(fig=None, template='base.html', tiles=None, crs=None,
         'crs' parameter.
     embed_links : bool, default False
         Whether external links (except tiles) shall be explicitely embedded in the final html.
+    jinja2_env : jinja2.Environment, default to the packages templates directory
+        A custom jinja2 Environment instance, allow the user to specify a custom
+        template directory.
+    template_params : dict, default None,
+        Extra parameters passed to the template
 
     Note: only one of 'crs' or 'epsg' may be specified. Both may be None, in
     which case the plot is assumed to be longitude / latitude.
@@ -71,7 +73,10 @@ def fig_to_html(fig=None, template='base.html', tiles=None, crs=None,
         else:
             tiles = maptiles.tiles[tiles]
 
-    template = env.get_template(template)
+    if jinja2_env is None:
+        jinja2_env = Environment(loader=PackageLoader('mplleaflet', 'templates'),
+                                 trim_blocks=True, lstrip_blocks=True)
+    template = jinja2_env.get_template(template)
 
     if fig is None:
         fig = plt.gcf()
@@ -96,6 +101,7 @@ def fig_to_html(fig=None, template='base.html', tiles=None, crs=None,
         'links': [_leaflet_js,_leaflet_css],
         'embed_links': embed_links,
     }
+    params.update(template_params if template_params else params)
     html = template.render(params)
 
     return html
