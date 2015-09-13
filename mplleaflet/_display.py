@@ -98,7 +98,9 @@ def fig_to_html(fig=None, template=None, tiles=None, crs=None,
         'links': [_leaflet_js,_leaflet_css],
         'embed_links': embed_links,
     }
-    params.update(template_params if template_params else params)
+    if template_params:
+        params.update(template_params)
+
     html = template.render(params)
 
     return html
