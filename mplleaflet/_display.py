@@ -19,8 +19,8 @@ _leaflet_js = JavascriptLink('https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7
 _leaflet_css = CssLink('https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.3/leaflet.css')
 _attribution = '<a href="https://github.com/jwass/mplleaflet">mplleaflet</a>'
 
-def fig_to_html(fig=None, template='base.html', tiles=None, crs=None,
-                epsg=None, embed_links=False, jinja2_env=None, template_params=None):
+def fig_to_html(fig=None, template=None, tiles=None, crs=None,
+                epsg=None, embed_links=False, template_params=None):
     """
     Convert a Matplotlib Figure to a Leaflet map
 
@@ -28,8 +28,8 @@ def fig_to_html(fig=None, template='base.html', tiles=None, crs=None,
     ----------
     fig : figure, default gcf()
         Figure used to convert to map
-    template : string, default 'base.html'
-        The Jinja2 template to use
+    template : a Jinja2 Template, default None
+        The Jinja2 template to use, if none is given use the default 'base.html'
     tiles : string or tuple
         The tiles argument is used to control the map tile source in the
         Leaflet map. Several simple shortcuts exist: 'osm', 'mapquest open',
@@ -51,9 +51,6 @@ def fig_to_html(fig=None, template='base.html', tiles=None, crs=None,
         'crs' parameter.
     embed_links : bool, default False
         Whether external links (except tiles) shall be explicitely embedded in the final html.
-    jinja2_env : jinja2.Environment, default to the packages templates directory
-        A custom jinja2 Environment instance, allow the user to specify a custom
-        template directory.
     template_params : dict, default None,
         Extra parameters passed to the template
 
@@ -73,10 +70,10 @@ def fig_to_html(fig=None, template='base.html', tiles=None, crs=None,
         else:
             tiles = maptiles.tiles[tiles]
 
-    if jinja2_env is None:
+    if template is None:
         jinja2_env = Environment(loader=PackageLoader('mplleaflet', 'templates'),
                                  trim_blocks=True, lstrip_blocks=True)
-    template = jinja2_env.get_template(template)
+        template = jinja2_env.get_template(template)
 
     if fig is None:
         fig = plt.gcf()
