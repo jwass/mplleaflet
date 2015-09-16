@@ -3,8 +3,11 @@ try:
 except ImportError:
     from distutils.core import setup, find_packages
 
-DESCRIPTION = "Convert Matplotlib plots into Leaflet web maps"
-LONG_DESCRIPTION = DESCRIPTION
+with open('AUTHORS.md') as f:
+    authors = f.read()
+
+description = "Convert Matplotlib plots into Leaflet web maps"
+long_description = description + "\n\n" + authors
 NAME = "mplleaflet"
 AUTHOR = "Jacob Wasserman"
 AUTHOR_EMAIL = "jwasserman@gmail.com"
@@ -12,13 +15,13 @@ MAINTAINER = "Jacob Wasserman"
 MAINTAINER_EMAIL = "jwasserman@gmail.com"
 DOWNLOAD_URL = 'http://github.com/jwass/mplleaflet'
 LICENSE = 'BSD 3-clause'
-VERSION = '0.0.2'
+VERSION = '0.0.3'
 
 setup(
     name=NAME,
     version=VERSION,
-    description=DESCRIPTION,
-    long_description=LONG_DESCRIPTION,
+    description=description,
+    long_description=long_description,
     author=AUTHOR,
     author_email=AUTHOR_EMAIL,
     maintainer=MAINTAINER,
