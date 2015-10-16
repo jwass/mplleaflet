@@ -53,7 +53,8 @@ tiles = {
     'esri_aerial': esri_aerial,
     'stamen_wc': stamen_wc,
     'esri_natgeo': esri_natgeo,
-    'cartodb_positron': cartodb_positron,    
+    'cartodb_positron': cartodb_positron,
+    'esri_worldtopo': esri_worldtopo
 }
 
 _mb_url = 'http://{{s}}.tiles.mapbox.com/v3/{mapid}/{{z}}/{{x}}/{{y}}.png'
