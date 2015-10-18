@@ -6,3 +6,4 @@ mplleaflet is written and maintained by Jacob Wasserman
 * Mike Fienen (https://github.com/mnfienen)
 * Michelle Fullwood (https://github.com/michelleful)
 * Martin Journois (https://github.com/BibMartin)
+* Simon Norris (https://github.com/smnorris)
