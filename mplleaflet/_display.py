@@ -3,6 +3,7 @@ from __future__ import absolute_import
 import json
 import os
 import uuid
+import base64
 
 import six
 
@@ -152,7 +153,7 @@ def display(fig=None, closefig=True, **kwargs):
 
     # We embed everything in an iframe.
     iframe_html = '<iframe src="data:text/html;base64,{html}" width="{width}" height="{height}"></iframe>'\
-    .format(html = html.encode('base64'),
+    .format(html = base64.b64encode(html.encode('utf8')).decode('utf8'),
             width = '100%',
             height= int(60.*fig.get_figheight()),
            )
