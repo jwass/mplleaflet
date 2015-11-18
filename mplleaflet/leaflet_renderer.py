@@ -114,10 +114,12 @@ class LeafletRenderer(Renderer):
                 minx=corner[0],
                 miny=corner[1],
             )
+
             try:
                 label = mplobj.get_label()
-            except TypeError:
+            except:
                 label = None
+
             properties = {'html': svg,
                           'label': label,
                           'anchor_x': -corner[0],
