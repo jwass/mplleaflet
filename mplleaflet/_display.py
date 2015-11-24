@@ -15,7 +15,7 @@ from .leaflet_renderer import LeafletRenderer
 from .links import JavascriptLink, CssLink
 from . import maptiles
 
-# We download explicitely the CSS and the JS
+# We download explicitly the CSS and the JS.
 _leaflet_js = JavascriptLink('https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.3/leaflet.js')
 _leaflet_css = CssLink('https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.3/leaflet.css')
 _attribution = '<a href="https://github.com/jwass/mplleaflet">mplleaflet</a>'
@@ -54,7 +54,8 @@ def fig_to_html(fig=None, template='base.html', tiles=None, crs=None,
         The EPSG code of the current plot. This can be used in place of the
         'crs' parameter.
     embed_links : bool, default False
-        Whether external links (except tiles) shall be explicitely embedded in the final html.
+        Whether external links (except tiles) shall be explicitly embedded in
+        the final html.
 
     Note: only one of 'crs' or 'epsg' may be specified. Both may be None, in
     which case the plot is assumed to be longitude / latitude.
