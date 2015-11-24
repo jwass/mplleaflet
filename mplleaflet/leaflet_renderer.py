@@ -45,6 +45,7 @@ class LeafletRenderer(Renderer):
             'color': style['edgecolor'],
             'weight': style['edgewidth'],
             'opacity': style['alpha'],
+            'fillOpacity': style['alpha'],
         }
         if style['facecolor'] != 'none':
             leaflet_style['fillColor'] = style['facecolor']
@@ -66,9 +67,9 @@ class LeafletRenderer(Renderer):
         return svg_style
 
     def _svg_path(self, pathcodes, data):
-        """ 
+        """
         Return the SVG path's 'd' element.
-    
+
         """
         def gen_path_elements(pathcodes, data):
             counts = {'M': 1, 'L': 1, 'C': 3, 'Z': 0}
