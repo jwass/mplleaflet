@@ -39,8 +39,24 @@ esri_worldtopo = (
     'Tiles &copy; Esri &mdash; Esri, HERE, DeLorme, Intermap, increment P Corp., GEBCO, USGS, FAO, NPS, NRCAN, GeoBase, IGN, Kadaster NL, Ordnance Survey, Esri Japan, METI, Esri China (Hong Kong), swisstopo, MapmyIndia, &copy; OpenStreetMap contributors, GIS User Community'
 )
 
+stamen_toner = (
+    'http://stamen-tiles-{s}.a.ssl.fastly.net/toner/{z}/{x}/{y}.png',
+    'Map tiles by <a href="http://stamen.com">Stamen Design</a>, <a href="http://creativecommons.org/licenses/by/3.0">CC BY 3.0</a> &mdash; Map data &copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+)
+
+stamen_tonerbackground = (
+    'http://stamen-tiles-{s}.a.ssl.fastly.net/toner-background/{z}/{x}/{y}.png',
+    'Map tiles by <a href="http://stamen.com">Stamen Design</a>, <a href="http://creativecommons.org/licenses/by/3.0">CC BY 3.0</a> &mdash; Map data &copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+)
+
+stamen_tonerlite = (
+    'http://stamen-tiles-{s}.a.ssl.fastly.net/toner-lite/{z}/{x}/{y}.png',
+    'Map tiles by <a href="http://stamen.com">Stamen Design</a>, <a href="http://creativecommons.org/licenses/by/3.0">CC BY 3.0</a> &mdash; Map data &copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+)
+
+
 stamen_wc = (
-    'http://{s}.tile.stamen.com/watercolor/{z}/{x}/{y}.png',
+    'http://stamen-tiles-{s}.a.ssl.fastly.net/watercolor/{z}/{x}/{y}.png',
     'Map tiles by <a href="http://stamen.com">Stamen Design</a>, <a href="http://creativecommons.org/licenses/by/3.0">CC BY 3.0</a> &mdash; Map data &copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
 )
 
@@ -57,6 +73,9 @@ tiles = {
     'mapbox bright': mapbox_bright,
     'thunderforest_landscape': thunderforest_landscape,
     'esri_aerial': esri_aerial,
+    'stamen_toner': stamen_toner,
+    'stamen_tonerbackground': stamen_tonerbackground,
+    'stamen_tonerlite': stamen_tonerlite,
     'stamen_wc': stamen_wc,
     'esri_natgeo': esri_natgeo,
     'cartodb_positron': cartodb_positron,
