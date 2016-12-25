@@ -39,6 +39,12 @@ stamen_wc = (
     'Map tiles by <a href="http://stamen.com">Stamen Design</a>, <a href="http://creativecommons.org/licenses/by/3.0">CC BY 3.0</a> &mdash; Map data &copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
 )
 
+stamen_toner = (
+    'http://a.tile.stamen.com/toner/{z}/{x}/{y}.png',
+    'Map tiles by <a href="http://stamen.com">Stamen Design</a>, <a href="http://creativecommons.org/licenses/by/3.0">CC BY 3.0</a> &mdash; Map data &copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+)
+
+
 cartodb_positron = (
     'http://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png',
     '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> &copy; <a href="http://cartodb.com/attributions">CartoDB</a>'
@@ -52,6 +58,7 @@ tiles = {
     'thunderforest_landscape': thunderforest_landscape,
     'esri_aerial': esri_aerial,
     'stamen_wc': stamen_wc,
+    'stamen_toner': stamen_toner,
     'esri_natgeo': esri_natgeo,
     'cartodb_positron': cartodb_positron,
     'esri_worldtopo': esri_worldtopo
