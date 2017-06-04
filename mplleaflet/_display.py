@@ -24,7 +24,7 @@ env = Environment(loader=PackageLoader('mplleaflet', 'templates'),
                   trim_blocks=True, lstrip_blocks=True)
 
 def fig_to_html(fig=None, template='base.html', tiles=None, crs=None,
-                epsg=None, embed_links=False):
+                epsg=None, embed_links=False, close_mpl=True):
     """
     Convert a Matplotlib Figure to a Leaflet map
 
@@ -56,6 +56,8 @@ def fig_to_html(fig=None, template='base.html', tiles=None, crs=None,
     embed_links : bool, default False
         Whether external links (except tiles) shall be explicitly embedded in
         the final html.
+    close_mpl : bool, default True
+        Option to close the instance of a figure of Matplotlib.
 
     Note: only one of 'crs' or 'epsg' may be specified. Both may be None, in
     which case the plot is assumed to be longitude / latitude.
@@ -80,7 +82,7 @@ def fig_to_html(fig=None, template='base.html', tiles=None, crs=None,
     dpi = fig.get_dpi()
 
     renderer = LeafletRenderer(crs=crs, epsg=epsg)
-    exporter = Exporter(renderer)
+    exporter = Exporter(renderer, close_mpl=close_mpl)
     exporter.run(fig)
 
     attribution = _attribution + ' | ' + tiles[1]
