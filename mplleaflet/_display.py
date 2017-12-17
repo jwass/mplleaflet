@@ -92,7 +92,7 @@ def fig_to_html(fig=None, template='base.html', tiles=None, crs=None,
 
     if float_precision:
         FloatEncoder._formatter = ".{}f".format(float_precision)
-        gjdata = json.dumps(renderer.geojson(), cls = FloatEncoder)
+        gjdata = json.dumps(renderer.geojson(), cls=FloatEncoder)
     else:
         gjdata = json.dumps(renderer.geojson())
     params = {
