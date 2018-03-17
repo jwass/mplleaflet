@@ -40,4 +40,4 @@ plt.quiver(xy[:,0], xy[:,1], uv[:,0], uv[:,1], speed)
 root, ext = os.path.splitext(__file__)
 mapfile = root  + '.html'
 # Create the map
-mplleaflet.show(path=mapfile, crs=crs_out, tiles=mplleaflet.maptiles.mapbox('jwass.gnj4hje6'))
+mplleaflet.show(path=mapfile, crs=crs_out, tiles=('https://api.mapbox.com/styles/v1/jwasserman/cir51iqda0010bmnic1s5sb71/tiles/256/{z}/{x}/{y}?access_token=pk.eyJ1Ijoiandhc3Nlcm1hbiIsImEiOiJjaW9kNnRiaXUwNGh0dmFrajlqZ25wZnFsIn0.CU4YynqRJkmG1PwWDMBJSA', '<a href="https://mapbox.com/about/maps">© 2017 Mapbox</a> | <a href=https://www.openstreetmap.org/about">© OpenStreetMap</a>'))

@@ -13,6 +13,7 @@ from jinja2 import Environment, PackageLoader
 
 from .leaflet_renderer import LeafletRenderer
 from .links import JavascriptLink, CssLink
+from .utils import FloatEncoder
 from . import maptiles
 
 # We download explicitly the CSS and the JS.
@@ -24,7 +25,7 @@ env = Environment(loader=PackageLoader('mplleaflet', 'templates'),
                   trim_blocks=True, lstrip_blocks=True)
 
 def fig_to_html(fig=None, template='base.html', tiles=None, crs=None,
-                epsg=None, embed_links=False, close_mpl=True):
+                epsg=None, embed_links=False, float_precision=6, close_mpl=True):
     """
     Convert a Matplotlib Figure to a Leaflet map
 
@@ -56,8 +57,10 @@ def fig_to_html(fig=None, template='base.html', tiles=None, crs=None,
     embed_links : bool, default False
         Whether external links (except tiles) shall be explicitly embedded in
         the final html.
+    float_precision : int, default 6
+        The precision to be used for the floats in the embedded geojson.
     close_mpl : bool, default True
-        Option to close the instance of a figure of Matplotlib.
+        Close the instance of a figure of Matplotlib.
 
     Note: only one of 'crs' or 'epsg' may be specified. Both may be None, in
     which case the plot is assumed to be longitude / latitude.
@@ -89,7 +92,8 @@ def fig_to_html(fig=None, template='base.html', tiles=None, crs=None,
 
     mapid = str(uuid.uuid4()).replace('-', '')
 
-    gjdata = json.dumps(renderer.geojson())
+    FloatEncoder._formatter = ".{}f".format(float_precision)
+    gjdata = json.dumps(renderer.geojson(), cls=FloatEncoder)
     params = {
         'geojson': gjdata,
         'width': fig.get_figwidth()*dpi,
