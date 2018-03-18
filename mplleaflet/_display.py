@@ -25,7 +25,7 @@ env = Environment(loader=PackageLoader('mplleaflet', 'templates'),
                   trim_blocks=True, lstrip_blocks=True)
 
 def fig_to_html(fig=None, template='base.html', tiles=None, crs=None,
-                epsg=None, embed_links=False, float_precision=6):
+                epsg=None, embed_links=False, float_precision=6, close_mpl=True):
     """
     Convert a Matplotlib Figure to a Leaflet map
 
@@ -59,6 +59,8 @@ def fig_to_html(fig=None, template='base.html', tiles=None, crs=None,
         the final html.
     float_precision : int, default 6
         The precision to be used for the floats in the embedded geojson.
+    close_mpl : bool, default True
+        Close the instance of a figure of Matplotlib.
 
     Note: only one of 'crs' or 'epsg' may be specified. Both may be None, in
     which case the plot is assumed to be longitude / latitude.
@@ -83,7 +85,7 @@ def fig_to_html(fig=None, template='base.html', tiles=None, crs=None,
     dpi = fig.get_dpi()
 
     renderer = LeafletRenderer(crs=crs, epsg=epsg)
-    exporter = Exporter(renderer)
+    exporter = Exporter(renderer, close_mpl=close_mpl)
     exporter.run(fig)
 
     attribution = _attribution + ' | ' + tiles[1]
