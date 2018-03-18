@@ -12,7 +12,7 @@ def iter_rings(data, pathcodes):
             if len(ring):
                 yield ring
             ring = [point]
-        elif code == 'L':
+        elif code == 'L' or code == 'Z' or code == 'S':
             ring.append(point)
         else:
             raise ValueError('Unrecognized code: {}'.format(code))
