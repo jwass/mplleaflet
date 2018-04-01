@@ -30,7 +30,11 @@ if (gjData.features.length != 0) {
         iconAnchor: [feature.properties.anchor_x, 
                      feature.properties.anchor_y], 
           className: 'empty'});  // What can I do about empty?
-      return L.marker(latlng, {icon: icon});
+      var marker = L.marker(latlng, {icon: icon});
+      if (feature.properties.label) {
+        marker.bindPopup('<pre>' + feature.properties.label + '</pre>');
+      }
+      return marker;
     }
   });
   gj.addTo(map);
