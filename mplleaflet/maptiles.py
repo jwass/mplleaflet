@@ -3,6 +3,11 @@ osm = (
     'Map data (c) <a href="http://openstreetmap.org">OpenStreetMap</a> contributors'
 )
 
+osm_bw = (
+    'http://{s}.tiles.wmflabs.org/bw-mapnik/{z}/{x}/{y}.png',
+    '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+)
+
 mapquest_open = (
     'http://otile1.mqcdn.com/tiles/1.0.0/map/{z}/{x}/{y}.png',
     'Map tiles by <a href="http://open.mapquest.com/">MapQuest</a> Data by <a href="http://openstreetmap.org">OpenStreetMap</a>, under <a href="http://creativecommons.org/licenses/by-sa/3.0">CC BY SA</a>.'
@@ -34,8 +39,24 @@ esri_worldtopo = (
     'Tiles &copy; Esri &mdash; Esri, HERE, DeLorme, Intermap, increment P Corp., GEBCO, USGS, FAO, NPS, NRCAN, GeoBase, IGN, Kadaster NL, Ordnance Survey, Esri Japan, METI, Esri China (Hong Kong), swisstopo, MapmyIndia, &copy; OpenStreetMap contributors, GIS User Community'
 )
 
+stamen_toner = (
+    'http://stamen-tiles-{s}.a.ssl.fastly.net/toner/{z}/{x}/{y}.png',
+    'Map tiles by <a href="http://stamen.com">Stamen Design</a>, <a href="http://creativecommons.org/licenses/by/3.0">CC BY 3.0</a> &mdash; Map data &copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+)
+
+stamen_tonerbackground = (
+    'http://stamen-tiles-{s}.a.ssl.fastly.net/toner-background/{z}/{x}/{y}.png',
+    'Map tiles by <a href="http://stamen.com">Stamen Design</a>, <a href="http://creativecommons.org/licenses/by/3.0">CC BY 3.0</a> &mdash; Map data &copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+)
+
+stamen_tonerlite = (
+    'http://stamen-tiles-{s}.a.ssl.fastly.net/toner-lite/{z}/{x}/{y}.png',
+    'Map tiles by <a href="http://stamen.com">Stamen Design</a>, <a href="http://creativecommons.org/licenses/by/3.0">CC BY 3.0</a> &mdash; Map data &copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+)
+
+
 stamen_wc = (
-    'http://{s}.tile.stamen.com/watercolor/{z}/{x}/{y}.png',
+    'http://stamen-tiles-{s}.a.ssl.fastly.net/watercolor/{z}/{x}/{y}.png',
     'Map tiles by <a href="http://stamen.com">Stamen Design</a>, <a href="http://creativecommons.org/licenses/by/3.0">CC BY 3.0</a> &mdash; Map data &copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
 )
 
@@ -53,10 +74,14 @@ cartodb_positron = (
 
 tiles = {
     'osm': osm,
+    'osm_bw': osm_bw,
     'mapquest open': mapquest_open,
     'mapbox bright': mapbox_bright,
     'thunderforest_landscape': thunderforest_landscape,
     'esri_aerial': esri_aerial,
+    'stamen_toner': stamen_toner,
+    'stamen_tonerbackground': stamen_tonerbackground,
+    'stamen_tonerlite': stamen_tonerlite,
     'stamen_wc': stamen_wc,
     'stamen_toner': stamen_toner,
     'esri_natgeo': esri_natgeo,
