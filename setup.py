@@ -32,6 +32,7 @@ setup(
     packages=find_packages(),
     package_data={'': ['*.html']}, # Include the templates
     install_requires=[
+        "matplotlib",
         "jinja2",
         "six",
     ],
