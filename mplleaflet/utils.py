@@ -3,17 +3,49 @@ from json.encoder import JSONEncoder
 
 
 def iter_rings(data, pathcodes):
+    '''
+    Segment and follow SVG paths
+    INPUT
+    ----------
+        data: 
+            (n,2) list of [x,y] points
+        pathcodes: 
+            list of SVG character commands
+    YIELDS
+    ------
+        (n,2) list of path coords
+    NOTES
+    -----
+    `data` and `pathcodes` are not neccesarily the same length.
+    Some codes use multiple data points, some use none.  
+    Loop through path codes popping off elements as needed,
+    yeild a path whenever it's complete
+    '''
+    # TODO implement C, S and others:
+    # info on svg commands here:
+    # https://css-tricks.com/svg-path-syntax-illustrated-guide/
+
     ring = []
-    # TODO: Do this smartly by finding when pathcodes changes value and do
-    # smart indexing on data, instead of iterating over each coordinate
-    for point, code in zip(data, pathcodes):
-        if code == 'M':
-            # Emit the path and start a new one
+    i=0
+    while i < len(pathcodes):
+        pathcode = pathcodes.pop(0)
+        if pathcode == 'Z':
+            ring.append(ring[0])
+            yield ring
+            ring=[]
+        elif pathcode == 'M':
             if len(ring):
                 yield ring
-            ring = [point]
-        elif code == 'L' or code == 'Z' or code == 'S':
-            ring.append(point)
+            ring = [data.pop(0)]
+        elif pathcode == 'L':
+            ring.append(data.pop(0))
+        elif pathcode == 'C':
+            _ = data.pop(0)
+            _ = data.pop(0)
+            ring.append(data.pop(0))
+        elif pathcode == 'S':
+            _ = data.pop(0)
+            ring.append(data.pop(0))
         else:
             raise ValueError('Unrecognized code: {}'.format(code))
 
