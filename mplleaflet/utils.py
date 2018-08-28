@@ -26,7 +26,8 @@ def iter_rings(data, pathcodes):
     # https://css-tricks.com/svg-path-syntax-illustrated-guide/
 
     ring = []
-    while pathcodes:
+    i=0
+    while i < len(pathcodes):
         pathcode = pathcodes.pop(0)
         if pathcode == 'Z':
             ring.append(ring[0])
