@@ -137,7 +137,7 @@ def save_html(fig=None, fileobj='_map.html', **kwargs):
     fileobj.close()
 
 
-def display(fig=None, closefig=True, **kwargs):
+def display(fig=None, closefig=True, width='100%', **kwargs):
     """
     Convert a Matplotlib Figure to a Leaflet map. Embed in IPython notebook.
 
@@ -159,7 +159,7 @@ def display(fig=None, closefig=True, **kwargs):
     # We embed everything in an iframe.
     iframe_html = '<iframe src="data:text/html;base64,{html}" width="{width}" height="{height}"></iframe>'\
     .format(html = base64.b64encode(html.encode('utf8')).decode('utf8'),
-            width = '100%',
+            width = width,
             height= int(60.*fig.get_figheight()),
            )
     return HTML(iframe_html)
