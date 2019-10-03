@@ -15,6 +15,7 @@ from .leaflet_renderer import LeafletRenderer
 from .links import JavascriptLink, CssLink
 from .utils import FloatEncoder
 from . import maptiles
+from IPython.display import IFrame
 
 # We download explicitly the CSS and the JS.
 _leaflet_js = JavascriptLink('https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.3/leaflet.js')
@@ -157,12 +158,8 @@ def display(fig=None, closefig=True, **kwargs):
     html = fig_to_html(fig, **kwargs)
 
     # We embed everything in an iframe.
-    iframe_html = '<iframe src="data:text/html;base64,{html}" width="{width}" height="{height}"></iframe>'\
-    .format(html = base64.b64encode(html.encode('utf8')).decode('utf8'),
-            width = '100%',
-            height= int(60.*fig.get_figheight()),
-           )
-    return HTML(iframe_html)
+    return IPython.display.IFrame(src="data:text/html;base64,{html}".format(html = base64.b64encode(html.encode('utf8')).decode('utf8')), width='100%', height=int(60.*fig.get_figheight()))
+
 
 def show(fig=None, path='_map.html', **kwargs):
     """
