@@ -158,7 +158,8 @@ def display(fig=None, closefig=True, **kwargs):
     html = fig_to_html(fig, **kwargs)
 
     # We embed everything in an iframe.
-    return IPython.display.IFrame(src="data:text/html;base64,{html}".format(html = base64.b64encode(html.encode('utf8')).decode('utf8')), width='100%', height=int(60.*fig.get_figheight()))
+    src = "data:text/html;base64,{html}".format(html = base64.b64encode(html.encode('utf8')).decode('utf8'))
+    return IFrame(src=src, width='100%', height=int(60.*fig.get_figheight()))
 
 
 def show(fig=None, path='_map.html', **kwargs):
