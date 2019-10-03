@@ -29,7 +29,7 @@ setup(
     url=DOWNLOAD_URL,
     download_url=DOWNLOAD_URL,
     license=LICENSE,
-    packages=find_packages(),
+    packages=["mplleaflet","mplexporter"],
     package_data={'': ['*.html']}, # Include the templates
     install_requires=[
         "jinja2",
