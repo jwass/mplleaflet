@@ -3,6 +3,16 @@ osm = (
     'Map data (c) <a href="http://openstreetmap.org">OpenStreetMap</a> contributors'
 )
 
+osm_german = (
+    'http://{s}.tile.openstreetmap.de/{z}/{x}/{y}.png',
+    'Map data (c) <a href="https://www.openstreetmap.de/karte.html">OpenStreetMap</a> contributors'
+)
+
+osm_france = (
+    'http://{s}.tile.openstreetmap.fr/osmfr/${z}/${x}/${y}.png',
+    'Map data (c) <a href="https://www.openstreetmap.fr/fonds-de-carte/">OpenStreetMap</a> contributors'
+)
+
 mapquest_open = (
     'http://otile1.mqcdn.com/tiles/1.0.0/map/{z}/{x}/{y}.png',
     'Map tiles by <a href="http://open.mapquest.com/">MapQuest</a> Data by <a href="http://openstreetmap.org">OpenStreetMap</a>, under <a href="http://creativecommons.org/licenses/by-sa/3.0">CC BY SA</a>.'
@@ -53,6 +63,8 @@ cartodb_positron = (
 
 tiles = {
     'osm': osm,
+    'osm_german': osm_german,
+    'osm_france': osm_france,
     'mapquest open': mapquest_open,
     'mapbox bright': mapbox_bright,
     'thunderforest_landscape': thunderforest_landscape,

@@ -37,7 +37,22 @@ Normally, displaying data as longitude, latitude will cause a cartographer to cr
 
 Disclaimer: Displaying data in spherical mercator might also cause a cartographer to cry.
 
-`show()` allows you to specify different tile layer URLs, CRS/EPSG codes, output files, etc. 
+#### Map Styles
+`show(tiles='STRING')` allows you to specify different tile layer URLs, CRS/EPSG codes, output files, etc.
+
+Predefind tile servers are:
+ * osm
+ * osm_german
+ * osm_france
+ * mapquest open
+ * mapbox bright
+ * thunderforest_landscape
+ * esri_aerial
+ * stamen_wc
+ * stamen_toner
+ * esri_natgeo
+ * cartodb_positron
+ * esri_worldtopo
 
 ### IPython Notebook embedding
 Just use  `mplleaflet.display()` to embed the interactive Leaflet map in an IPython notebook.

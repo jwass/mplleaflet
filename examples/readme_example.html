@@ -1,3 +1,5 @@
+<!DOCTYPE html>
+<html>
 <head>
   <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.7.1/leaflet.css" />
   <script src="http://cdn.leafletjs.com/leaflet-0.7.1/leaflet.js"></script>
@@ -5,7 +7,7 @@
     #map0 {
       height:100%;
     }
-  </style> 
+  </style>
 </head>
 <body>
   <div id="map0"></div>
@@ -20,9 +22,9 @@ var gj = L.geoJson(gjData, {
     return feature.properties;
   },
   pointToLayer: function (feature, latlng) {
-    var icon = L.divIcon({'html': feature.properties.html, 
-      iconAnchor: [feature.properties.width / 2.0 , 
-                   feature.properties.height / 2.0], 
+    var icon = L.divIcon({'html': feature.properties.html,
+      iconAnchor: [feature.properties.width / 2.0 ,
+                   feature.properties.height / 2.0],
         className: 'empty'});  // What can I do about empty?
     return L.marker(latlng, {icon: icon});
   }
@@ -32,3 +34,4 @@ gj.addTo(map);
 map.fitBounds(gj.getBounds());
 </script>
 </body>
+</html>
