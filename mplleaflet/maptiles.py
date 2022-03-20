@@ -1,5 +1,5 @@
 osm = (
-    'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+    'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
     'Map data (c) <a href="http://openstreetmap.org">OpenStreetMap</a> contributors'
 )
 
